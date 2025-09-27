@@ -117,11 +117,14 @@ func main() {
 			fmt.Printf("Free disk space is too low: %d Mb left\n", freeMB)
 		}
 
-		// Проверка сети (> 90% = 9/10) — данные в битах/сек
-		if totalNet > 0 && usedNet*10 > totalNet*9 {
-			freeBitsPerSec := totalNet - usedNet
-			freeMbitPerSec := freeBitsPerSec / 1_000_000
-			fmt.Printf("Network bandwidth usage high: %d Mbit/s available\n", freeMbitPerSec)
+		if totalNet > 0 {
+			netUsage := float64(usedNet) / float64(totalNet)
+			if netUsage > netUsageThreshold {
+				freeBytesPerSec := totalNet - usedNet
+				// Переводим байты/сек в мегабиты/сек: *8 / 1000 / 1000
+				freeMbitPerSec := float64(freeBytesPerSec) * 8 / 1_000_000
+				fmt.Printf("Network bandwidth usage high: %d Mbit/s available\n", int(freeMbitPerSec))
+			}
 		}
 
 		time.Sleep(checkInterval)
