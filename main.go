@@ -89,6 +89,7 @@ func main() {
 		if err1 != nil || err2 != nil || err3 != nil || err4 != nil ||
 			err5 != nil || err6 != nil || err7 != nil {
 			// ошибка парсинга — считаем как ошибку получения данных
+
 			failCount++
 			if failCount >= maxFailures {
 				fmt.Println("Unable to fetch server statistic")
@@ -103,35 +104,27 @@ func main() {
 			fmt.Printf("Load Average is too high: %.0f\n", loadAvg)
 		}
 
-		// Проверка использования памяти
-		if totalMem > 0 {
-			memUsage := float64(usedMem) / float64(totalMem)
-			if memUsage > memUsageThreshold {
-				percentage := int(memUsage * 100)
-				fmt.Printf("Memory usage too high: %d%%\n", percentage)
-			}
+		// Проверка памяти (> 80% = 4/5)
+		if totalMem > 0 && usedMem*5 > totalMem*4 {
+			percentage := int((float64(usedMem) / float64(totalMem)) * 100)
+			fmt.Printf("Memory usage too high: %d%%\n", percentage)
 		}
 
-		// Проверка дискового пространства
-		if totalDisk > 0 {
-			diskUsage := float64(usedDisk) / float64(totalDisk)
-			if diskUsage > diskUsageThreshold {
-				freeBytes := totalDisk - usedDisk
-				freeMB := freeBytes / (1024 * 1024)
-				fmt.Printf("Free disk space is too low: %d Mb left\n", freeMB)
-			}
+		// Проверка диска (> 90% = 9/10)
+		if totalDisk > 0 && usedDisk*10 > totalDisk*9 {
+			freeBytes := totalDisk - usedDisk
+			freeMB := freeBytes / (1024 * 1024)
+			fmt.Printf("Free disk space is too low: %d Mb left\n", freeMB)
 		}
 
-		// Проверка сетевой загрузки
-		if totalNet > 0 {
-			netUsage := float64(usedNet) / float64(totalNet)
-			if netUsage > netUsageThreshold {
-				freeBitsPerSec := totalNet - usedNet
-				freeMbitPerSec := float64(freeBitsPerSec) / 1_000_000
-				fmt.Printf("Network bandwidth usage high: %.0f Mbit/s available\n", freeMbitPerSec)
-			}
+		// Проверка сети (> 90% = 9/10) — данные в битах/сек
+		if totalNet > 0 && usedNet*10 > totalNet*9 {
+			freeBitsPerSec := totalNet - usedNet
+			freeMbitPerSec := freeBitsPerSec / 1_000_000
+			fmt.Printf("Network bandwidth usage high: %d Mbit/s available\n", freeMbitPerSec)
 		}
 
 		time.Sleep(checkInterval)
+		
 	}
 }
