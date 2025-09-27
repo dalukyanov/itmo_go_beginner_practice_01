@@ -34,7 +34,7 @@ func main() {
 			failCount++
 			if failCount >= maxFailures {
 				fmt.Println("Unable to fetch server statistic")
-				failCount = 0 // сбросить счётчик после вывода сообщения
+				failCount = 0 // сбросить счётчик после вывода сообщения в терминал
 			}
 			time.Sleep(checkInterval)
 			continue // откатываемся в начало цикла
