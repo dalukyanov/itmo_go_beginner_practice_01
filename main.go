@@ -117,8 +117,8 @@ func main() {
 			diskUsage := float64(usedDisk) / float64(totalDisk)
 			if diskUsage > diskUsageThreshold {
 				freeBytes := totalDisk - usedDisk
-				freeMB := float64(freeBytes) / (1024 * 1024)
-				fmt.Printf("Free disk space is too low: %.0f Mb left\n", freeMB)
+				freeMB := freeBytes / (1024 * 1024) // ← целочисленное деление!
+				fmt.Printf("Free disk space is too low: %d Mb left\n", freeMB)
 			}
 		}
 
