@@ -114,13 +114,11 @@ func main() {
 		}
 
 		// Проверка дискового пространства
-		if totalDisk > 0 {
-			diskUsage := float64(usedDisk) / float64(totalDisk)
-			if diskUsage > diskUsageThreshold {
-				freeBytes := totalDisk - usedDisk
-				freeMB := freeBytes / (1024 * 1024)
-				fmt.Printf("Free disk space is too low: %d Mb left\n", freeMB)
-			}
+
+		if totalDisk > 0 && usedDisk*10 > totalDisk*9 {
+			freeBytes := totalDisk - usedDisk
+			freeMB := freeBytes / (1024 * 1024)
+			fmt.Printf("Free disk space is too low: %d Mb left\n", freeMB)
 		}
 
 		// Проверка сетевой загрузки
