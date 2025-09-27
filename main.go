@@ -98,21 +98,21 @@ func main() {
 			continue
 		}
 
-		// проверка Load Average
+		// Проверка Load Average
 		if loadAvg > loadAvgThreshold {
-			fmt.Printf("Load Average is too high: %.2f\n", loadAvg)
+			fmt.Printf("Load Average is too high: %.0f\n", loadAvg)
 		}
 
-		// проверка использования памяти
+		// Проверка использования памяти
 		if totalMem > 0 {
 			memUsage := float64(usedMem) / float64(totalMem)
 			if memUsage > memUsageThreshold {
 				percentage := memUsage * 100
-				fmt.Printf("Memory usage too high: %.1f%%\n", percentage)
+				fmt.Printf("Memory usage too high: %.0f%%\n", percentage)
 			}
 		}
 
-		// проверка дискового пространства
+		// Проверка дискового пространства
 		if totalDisk > 0 {
 			diskUsage := float64(usedDisk) / float64(totalDisk)
 			if diskUsage > diskUsageThreshold {
@@ -122,14 +122,13 @@ func main() {
 			}
 		}
 
-		// проверка сетевой загрузки
+		// Проверка сетевой загрузки
 		if totalNet > 0 {
 			netUsage := float64(usedNet) / float64(totalNet)
 			if netUsage > netUsageThreshold {
-				freeBytesPerSec := totalNet - usedNet
-				// переводим байты/сек в мегабиты/сек: *8 / 1000 / 1000
-				freeMbitPerSec := float64(freeBytesPerSec) * 8 / 1_000_000
-				fmt.Printf("Network bandwidth usage high: %.1f Mbit/s available\n", freeMbitPerSec)
+				freeBitsPerSec := totalNet - usedNet // ← уже в битах!
+				freeMbitPerSec := float64(freeBitsPerSec) / 1_000_000
+				fmt.Printf("Network bandwidth usage high: %.0f Mbit/s available\n", freeMbitPerSec)
 			}
 		}
 
