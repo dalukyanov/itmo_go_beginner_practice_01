@@ -124,13 +124,10 @@ func main() {
 		}
 
 		// Проверка сетевой загрузки
-		if totalNet > 0 {
-			netUsage := float64(usedNet) / float64(totalNet)
-			if netUsage > netUsageThreshold {
-				freeBitsPerSec := totalNet - usedNet
-				freeMbitPerSec := float64(freeBitsPerSec) / 1_000_000
-				fmt.Printf("Network bandwidth usage high: %.0f Mbit/s available\n", freeMbitPerSec)
-			}
+		if totalNet > 0 && usedNet*100 > totalNet*90 {
+			freeBitsPerSec := totalNet - usedNet
+			freeMbitPerSec := freeBitsPerSec / 1_000_000
+			fmt.Printf("Network bandwidth usage high: %d Mbit/s available\n", freeMbitPerSec)
 		}
 
 		time.Sleep(checkInterval)
