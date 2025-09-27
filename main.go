@@ -107,8 +107,8 @@ func main() {
 		if totalMem > 0 {
 			memUsage := float64(usedMem) / float64(totalMem)
 			if memUsage > memUsageThreshold {
-				percentage := memUsage * 100
-				fmt.Printf("Memory usage too high: %.0f%%\n", percentage)
+				percentage := int(memUsage * 100)
+				fmt.Printf("Memory usage too high: %d%%\n", percentage)
 			}
 		}
 
@@ -117,7 +117,7 @@ func main() {
 			diskUsage := float64(usedDisk) / float64(totalDisk)
 			if diskUsage > diskUsageThreshold {
 				freeBytes := totalDisk - usedDisk
-				freeMB := freeBytes / (1024 * 1024) // ← целочисленное деление!
+				freeMB := freeBytes / (1024 * 1024)
 				fmt.Printf("Free disk space is too low: %d Mb left\n", freeMB)
 			}
 		}
@@ -126,7 +126,7 @@ func main() {
 		if totalNet > 0 {
 			netUsage := float64(usedNet) / float64(totalNet)
 			if netUsage > netUsageThreshold {
-				freeBitsPerSec := totalNet - usedNet // ← уже в битах!
+				freeBitsPerSec := totalNet - usedNet
 				freeMbitPerSec := float64(freeBitsPerSec) / 1_000_000
 				fmt.Printf("Network bandwidth usage high: %.0f Mbit/s available\n", freeMbitPerSec)
 			}
