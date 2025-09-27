@@ -89,6 +89,7 @@ func main() {
 		if err1 != nil || err2 != nil || err3 != nil || err4 != nil ||
 			err5 != nil || err6 != nil || err7 != nil {
 			// ошибка парсинга — считаем как ошибку получения данных
+
 			failCount++
 			if failCount >= maxFailures {
 				fmt.Println("Unable to fetch server statistic")
@@ -133,5 +134,6 @@ func main() {
 		}
 
 		time.Sleep(checkInterval)
+		
 	}
 }
